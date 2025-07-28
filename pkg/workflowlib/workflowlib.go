@@ -21,12 +21,12 @@ func BuildSteps(count int) []Step {
 	return steps
 }
 
-func CreateWorkflow(name string, steps []Step, env map[string]string) Workflow {
+func CreateWorkflow(name string, env map[string]string, steps []Step) Workflow {
 	return Workflow{
 		Name: name,
-		On: map[string]interface{}{
-			"push": map[string][]string{
-				"branches": {"main"},
+		On: Trigger{
+			Push: Push{
+				Branches: []string{"main"},
 			},
 		},
 		Jobs: map[string]Job{
@@ -56,14 +56,14 @@ func AddEnvToYaml() map[string]string {
 	}
 }
 
-func findFolder(file string) string {
+func FindFolder(file string) string {
 	absPath, _ := filepath.Abs(file)
 	targetDir := filepath.Dir(absPath)
 	return targetDir
 }
 
-func copyNotifyFile(targetDir string) error {
-	data, err := os.ReadFile("../../templates/notify.sh")
+func CopyNotifyFile(targetDir string) error {
+	data, err := os.ReadFile("templates/notify/notify.sh")
 	if err != nil {
 		return err
 	}

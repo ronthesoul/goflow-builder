@@ -2,14 +2,22 @@ package workflowlib
 
 type Workflow struct {
 	Name string
-	On   map[string]interface{}
+	On   Trigger
 	Jobs map[string]Job
 }
 
+type Trigger struct {
+	Push Push `yaml:"push"`
+}
+
+type Push struct {
+	Branches []string `yaml:"branches"`
+}
+
 type Job struct {
-	RunsOn string            `yaml:"runsOn,omitempty"`
-	Steps  []Step            `yaml:"steps,omitempty"`
+	RunsOn string            `yaml:"runs-on,omitempty"`
 	Env    map[string]string `yaml:"env,omitempty"`
+	Steps  []Step            `yaml:"steps,omitempty"`
 }
 
 type Step struct {
