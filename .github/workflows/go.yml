@@ -38,10 +38,14 @@ jobs:
     - name: Test
       run: | 
         $NOTIFY "Starting Step - Test" $SLACK_WEBHOOK
-        if go test -v ./...; then 
+        OUTPUT=$(go test -v ./... 2>&1)
+        STATUS=$?
+
+
+        if [[ $STATUS -eq 0 ]]; then 
             $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
            else
-            $NOTIFY "Step - Test ❌ Failed" $SLACK_WEBHOOK
+            $NOTIFY "Step - Test ❌ Failed: \n$OUTPUT" $SLACK_WEBHOOK
           fi
     - name: Final pipeline result
       if: success()
