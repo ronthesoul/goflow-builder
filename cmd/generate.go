@@ -20,8 +20,9 @@ type Job struct {
 }
 
 type Step struct {
-	Name string
-	Run  string
+	Name string `yaml:"name"`
+	Uses string `yaml:"uses,omitempty"`
+	Run  string `yaml:"run,omitempty"`
 }
 
 var steps int
@@ -31,6 +32,7 @@ var generateCmd = &cobra.Command{
 	Short: "Generate a GitHub actions workflow",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var generatedSteps []Step
+		generatedSteps = append(generatedSteps, Step{Name: "Checkout", Uses: "actions/checkout@v4"})
 		for i := 1; i <= steps; i++ {
 			generatedSteps = append(generatedSteps, Step{
 				Name: fmt.Sprintf("Step %d", i),
