@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/ronthesoul/workflow-builder/pkg/workflowlib"
+	"github.com/ronthesoul/goflow-builder/pkg/workflowlib"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 )

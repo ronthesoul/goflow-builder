@@ -1,4 +1,4 @@
-module github.com/ronthesoul/workflow-builder
+module github.com/ronthesoul/goflow-builder
 
 go 1.22.2
 
