@@ -71,5 +71,6 @@ var generateCmd = &cobra.Command{
 
 func init() {
 	generateCmd.Flags().IntVarP(&steps, "steps", "s", 1, "Number of steps to generate")
+	//	generateCmd.Flags().BoolVarP(&notify, "notify", "n", false, "Enable Slack notifications")
 	rootCmd.AddCommand(generateCmd)
 }
