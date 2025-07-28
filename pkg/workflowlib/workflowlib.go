@@ -44,7 +44,7 @@ func WriteYAMLToFile(data interface{}, path string) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(path, out, 0600)
+	return os.WriteFile(path, out, 0644)
 }
 
 // Notify flag functions
