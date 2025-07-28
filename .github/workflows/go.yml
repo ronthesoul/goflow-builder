@@ -30,10 +30,14 @@ jobs:
     - name: Build
       run: |
         $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
-         if go build -v ./...; then
+        OUTPUT=$(go build -v ./.. 2>&1)
+        STATUS=$?
+
+
+         if [[ $STATUS -eq 0 ]]; then
            $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
            else
-            $NOTIFY "Step - Build ❌ Failed" $SLACK_WEBHOOK
+            $NOTIFY "Step - Test ❌ Failed: \n$OUTPUT" $SLACK_WEBHOOK
           fi
     - name: Test
       run: | 
