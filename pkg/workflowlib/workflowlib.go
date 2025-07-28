@@ -3,9 +3,12 @@ package workflowlib
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v3"
 )
+
+// Generate functions
 
 func BuildSteps(count int) []Step {
 	steps := []Step{{Name: "Checkout", Uses: "actions/checkout@v4"}}
@@ -18,7 +21,7 @@ func BuildSteps(count int) []Step {
 	return steps
 }
 
-func CreateWorkflow(name string, steps []Step) Workflow {
+func CreateWorkflow(name string, steps []Step, env map[string]string) Workflow {
 	return Workflow{
 		Name: name,
 		On: map[string]interface{}{
@@ -29,6 +32,7 @@ func CreateWorkflow(name string, steps []Step) Workflow {
 		Jobs: map[string]Job{
 			"build": {
 				RunsOn: "ubuntu-latest",
+				Env:    env,
 				Steps:  steps,
 			},
 		},
@@ -41,4 +45,28 @@ func WriteYAMLToFile(data interface{}, path string) error {
 		return err
 	}
 	return os.WriteFile(path, out, 0644)
+}
+
+// Notify flag functions
+
+func AddEnvToYaml() map[string]string {
+	return map[string]string{
+		"SLACK_WEBHOOK": "${{ secrets.SLACK_WEBHOOK }}",
+		"NOTIFY":        ".github/workflows/notify.sh",
+	}
+}
+
+func findFolder(file string) string {
+	absPath, _ := filepath.Abs(file)
+	targetDir := filepath.Dir(absPath)
+	return targetDir
+}
+
+func copyNotifyFile(targetDir string) error {
+	data, err := os.ReadFile("../../templates/notify.sh")
+	if err != nil {
+		return err
+	}
+	dest := filepath.Join(targetDir, "notify.sh")
+	return os.WriteFile(dest, data, 0644)
 }
