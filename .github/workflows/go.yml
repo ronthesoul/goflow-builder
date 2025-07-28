@@ -30,7 +30,7 @@ jobs:
     - name: Build
       run: |
         $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
-        OUTPUT=$(go build -v ./.. 2>&1)
+        OUTPUT=$(go build -v ./.. 2>&1 | tail -n 20)
         STATUS=$?
 
 
