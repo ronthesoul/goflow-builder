@@ -37,7 +37,7 @@ jobs:
          if [[ $STATUS -eq 0 ]]; then
            $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
            else
-            echo -e "Step - Build ❌ Failed:\n$OUTPUT" | $NOTIFY - $SLACK_WEBHOOK
+            $NOTIFY "Step - Build ❌ Failed:\n$OUTPUT" $SLACK_WEBHOOK
           fi
     - name: Test
       run: | 
