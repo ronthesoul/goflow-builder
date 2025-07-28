@@ -56,9 +56,7 @@ jobs:
         if [[ $STATUS -eq 0 ]]; then 
             $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
            else
-            MSG="Step - Test ❌ Failed\n$OUTPUT"
-            MSG_ESCAPED=$(echo -e "$MSG" | jq -Rs .)
-            $NOTIFY "$MSG_ESCAPED" $SLACK_WEBHOOK
+            $NOTIFY "Step - Test ❌ Failed \n$OUTPUT" $SLACK_WEBHOOK
             exit 1
           fi
     - name: Final pipeline result
