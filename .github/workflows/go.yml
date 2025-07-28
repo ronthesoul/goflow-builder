@@ -28,7 +28,7 @@ jobs:
           $NOTIFY "Starting ${{ github.event.repository.name }} Test - Commit: ${{ github.event.head_commit.message }}" $SLACK_WEBHOOK
 
     - name: Build
-      run:
+      run: |
         $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
          if go build -v ./...; then
            $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
@@ -36,7 +36,7 @@ jobs:
             $NOTIFY "Step - Build ❌ Failed" $SLACK_WEBHOOK
           fi
     - name: Test
-      run:
+      run: | 
         $NOTIFY "Starting Step - Test" $SLACK_WEBHOOK
         if go test -v ./...; then 
             $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
