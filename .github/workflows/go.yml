@@ -34,7 +34,11 @@ jobs:
         go build -v ./.. >build.log 2>&1
         STATUS=$?
         OUTPUT=$(tail -n 10 build.log)
+        cat build.log
+        echo $STATUS
         rm build.log
+        
+      
 
 
          if [[ $STATUS -eq 0 ]]; then
