@@ -44,18 +44,20 @@ jobs:
           fi
     - name: Test
       run: | 
+        set +e
         $NOTIFY "Starting Step - Test" $SLACK_WEBHOOK
         OUTPUT=""
-        go test -v ./.. >build.log 2>&1
+        go test -v ./... > build.log 2>&1
         STATUS=$?
-        OUTPUT=$(tail -n 10 build.log)
+        OUTPUT=$(cat build.log)
         rm build.log
 
 
         if [[ $STATUS -eq 0 ]]; then 
             $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
            else
-            $NOTIFY "Step - Test ❌ Failed: \n$OUTPUT" $SLACK_WEBHOOK
+            $NOTIFY "Step - Test ❌ Failed \n$OUTPUT" $SLACK_WEBHOOK
+            exit 1
           fi
     - name: Final pipeline result
       if: success()
