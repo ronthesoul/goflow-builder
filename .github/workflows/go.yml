@@ -45,7 +45,6 @@ jobs:
     - name: Test
       run: |
         set +e
-        set -x
         $NOTIFY "Starting Step - Test" "$SLACK_WEBHOOK"
         go test -v ./... > build.log 2>&1
         STATUS=$?
@@ -62,6 +61,7 @@ jobs:
     - name: Security check
       run: |
         set +e
+        set -x
         $NOTIFY "Starting Step - Security check" "$SLACK_WEBHOOK"
         go install github.com/securego/gosec/v2/cmd/gosec@latest
 
