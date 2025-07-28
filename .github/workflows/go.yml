@@ -74,7 +74,24 @@ jobs:
           $NOTIFY "Step - Security check ✅ Success" "$SLACK_WEBHOOK"
         else
           $NOTIFY "Step - Security check ❌ Failed:\n\`\`\`$OUTPUT\`\`\`" "$SLACK_WEBHOOK"
+          exit 1
         fi
+
+    - name: Build Go binary
+      run: |
+        mkdir -p dist
+        GOOS=linux GOARCH=amd64 go build -o dist/goflow-builder main.go
+
+    - name: Archive tool
+      run: |
+        cd dist
+        zip goflow-builder-${{ github.run_number }}.zip goflow-builder
+
+    - name: Upload release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.${{ github.run_number }}
+        files: dist/goflow-builder-${{ github.run_number }}.zip
 
     - name: Final pipeline result
       if: success()
