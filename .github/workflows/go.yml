@@ -7,7 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
@@ -24,8 +23,8 @@ jobs:
 
     - name: Notify Start
       run: |
-          chmod +x $NOTIFY
-          $NOTIFY "Starting ${{ github.event.repository.name }} Test - Commit: ${{ github.event.head_commit.message }}" $SLACK_WEBHOOK
+        chmod +x $NOTIFY
+        $NOTIFY "Starting ${{ github.event.repository.name }} Test - Commit: ${{ github.event.head_commit.message }}" $SLACK_WEBHOOK
 
     - name: Build
       run: |
@@ -36,35 +35,35 @@ jobs:
         OUTPUT=$(cat build.log)
         rm build.log
 
-         if [[ $STATUS -eq 0 ]]; then
-           $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
-           else
-            $NOTIFY "Step - Build ❌ Failed \n$OUTPUT" $SLACK_WEBHOOK
-            exit 1
-          fi
+        if [[ $STATUS -eq 0 ]]; then
+          $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
+        else
+          $NOTIFY "Step - Build ❌ Failed \n\`\`\`$OUTPUT\`\`\`" $SLACK_WEBHOOK
+          exit 1
+        fi
+
     - name: Test
-      run: | 
+      run: |
         set +e
         $NOTIFY "Starting Step - Test" $SLACK_WEBHOOK
-        OUTPUT=""
         go test -v ./... > build.log 2>&1
         STATUS=$?
         OUTPUT=$(cat build.log)
         rm build.log
 
+        if [[ $STATUS -eq 0 ]]; then
+          $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
+        else
+          $NOTIFY "Step - Test ❌ Failed:\n\`\`\`$OUTPUT\`\`\`" $SLACK_WEBHOOK
+          exit 1
+        fi
 
-        if [[ $STATUS -eq 0 ]]; then 
-            $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
-           else
-            $NOTIFY "Step - Test ❌ Failed:\n\`\`\`$OUTPUT\`\`\`" $SLACK_WEBHOOK
-            exit 1
-          fi
     - name: Final pipeline result
       if: success()
       run: |
-          $NOTIFY "🚀 Pipeline completed successfully!" $SLACK_WEBHOOK
+        $NOTIFY "🚀 Pipeline completed successfully!" $SLACK_WEBHOOK
+
     - name: Final pipeline failure
       if: failure()
       run: |
-          $NOTIFY "🔥 Pipeline failed!" $SLACK_WEBHOOK
-
+        $NOTIFY "🔥 Pipeline failed!" $SLACK_WEBHOOK
