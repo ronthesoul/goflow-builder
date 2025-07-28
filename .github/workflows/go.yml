@@ -30,13 +30,12 @@ jobs:
     - name: Build
       run: |
         $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
-        OUTPUT=""
-        go build -v ./.. >build.log 2>&1
+        go build -v ./.. > build.log 2>&1
         STATUS=$?
-        OUTPUT=$(tail -n 10 build.log)
-        cat build.log
-        echo $STATUS
-        rm build.log
+        echo "Exit status: $STATUS"
+
+        echo "--- Build Log ---"
+        cat build.log 
         
       
 
