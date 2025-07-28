@@ -42,7 +42,7 @@ jobs:
     - name: Test
       run: | 
         $NOTIFY "Starting Step - Test" $SLACK_WEBHOOK
-        OUTPUT=$(go test -v ./... 2>&1)
+        OUTPUT=$(go test -v ./... 2>&1 | tail -n 20)
         STATUS=$?
 
 
