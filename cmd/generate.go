@@ -29,7 +29,7 @@ var steps int
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate a GitHub actions workflow",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var generatedSteps []Step
 		for i := 1; i <= steps; i++ {
 			generatedSteps = append(generatedSteps, Step{
@@ -53,9 +53,17 @@ var generateCmd = &cobra.Command{
 			},
 		}
 
-		out, _ := yaml.Marshal(&wf)
-		_ = os.WriteFile("workflow.yml", out, 0644)
+		out, err := yaml.Marshal(&wf)
+		if err != nil {
+			return err
+		}
+		err = os.WriteFile("workflow.yml", out, 0644)
+		if err != nil {
+			return err
+		}
+
 		fmt.Println("workflow.yml generated")
+		return nil
 	},
 }
 
