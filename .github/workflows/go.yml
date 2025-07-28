@@ -31,7 +31,7 @@ jobs:
       run: |
         set +e
         $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
-        go build -v ./.. > build.log 2>&1
+        OUTPUT=$(go build -v ./.. > build.log 2>&1)
         STATUS=$?
         echo "Exit status: $STATUS"
 
@@ -44,7 +44,8 @@ jobs:
          if [[ $STATUS -eq 0 ]]; then
            $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
            else
-            $NOTIFY "Step - Build ❌ Failed" $SLACK_WEBHOOK
+            $NOTIFY "Step - Build ❌ Failed \n$OUTPUT" $SLACK_WEBHOOK
+            exit 1
           fi
     - name: Test
       run: | 
