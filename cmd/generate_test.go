@@ -15,7 +15,7 @@ func TestGenerateWorkflowFile(t *testing.T) {
 		t.Fatalf("Command failed: %v", err)
 	}
 
-	if _, err := os.Stat("workflow.yml"); os.IsNotExist(err) {
+	if _, err := os.Stat("workflow1.yml"); os.IsNotExist(err) {
 		t.Fatalf("workflow not generated")
 	}
 
