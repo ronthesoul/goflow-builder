@@ -20,5 +20,15 @@ func TestGenerateWorkflowFile(t *testing.T) {
 	}
 
 	_ = os.Remove("workflow.yml")
+}
+
+func TestGenerateInvalidRun(t *testing.T) {
+	rootCmd.SetArgs([]string{"generate", "--steps", "invalid"})
+	err := rootCmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for invalid --steps input, but got none")
+	} else {
+		t.Logf("caught expected error: %v", err)
+	}
 
 }

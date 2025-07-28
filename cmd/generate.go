@@ -63,7 +63,7 @@ var generateCmd = &cobra.Command{
 		}
 
 		fmt.Println("workflow.yml generated")
-		return nil
+
 	},
 }
 
