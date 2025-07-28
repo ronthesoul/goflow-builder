@@ -21,7 +21,7 @@ func BuildSteps(count int) []Step {
 	return steps
 }
 
-func CreateWorkflow(name string, env map[string]string, steps []Step) Workflow {
+func CreateWorkflow(name string, runner string, env map[string]string, steps []Step) Workflow {
 	return Workflow{
 		Name: name,
 		On: Trigger{
@@ -31,7 +31,7 @@ func CreateWorkflow(name string, env map[string]string, steps []Step) Workflow {
 		},
 		Jobs: map[string]Job{
 			"build": {
-				RunsOn: "ubuntu-latest",
+				RunsOn: runner,
 				Env:    env,
 				Steps:  steps,
 			},
