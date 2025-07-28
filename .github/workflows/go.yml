@@ -29,6 +29,7 @@ jobs:
 
     - name: Build
       run: |
+        set +e
         $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
         go build -v ./.. > build.log 2>&1
         STATUS=$?
