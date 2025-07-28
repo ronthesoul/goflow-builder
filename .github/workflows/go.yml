@@ -33,7 +33,7 @@ jobs:
         OUTPUT=""
         go build -v ./.. >build.log 2>&1
         STATUS=$?
-        OUTPUT=$(tail -n 20 build.log)
+        OUTPUT=$(tail -n 10 build.log)
         rm build.log
 
 
@@ -48,7 +48,7 @@ jobs:
         OUTPUT=""
         go test -v ./.. >build.log 2>&1
         STATUS=$?
-        OUTPUT=$(tail -n 20 build.log)
+        OUTPUT=$(tail -n 10 build.log)
         rm build.log
 
 
