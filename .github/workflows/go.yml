@@ -1,6 +1,3 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
 name: Go
 
 on:
@@ -15,14 +12,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.22.2'
 
-    - name: Build
-      run: go build -v ./...
+    - name: Notify Start
+      run: |
+          chmod +x $NOTIFY
+          $NOTIFY "Starting ${{ github.event.repository.name }} Test - Commit: ${{ github.event.head_commit.message }}" $SLACK_WEBHOOK
 
+    - name: Build
+      run:
+        $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
+         if go build -v ./...; then
+           $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
+           else
+            $NOTIFY "Step - Build ❌ Failed" $SLACK_WEBHOOK
+          fi
     - name: Test
-      run: go test -v ./...
+      run:
+        $NOTIFY "Starting Step - Test" $SLACK_WEBHOOK
+        if go test -v ./...; then 
+            $NOTIFY "Step - Test ✅ Success" $SLACK_WEBHOOK
+           else
+            $NOTIFY "Step - Test ❌ Failed" $SLACK_WEBHOOK
+          fi
+    - name: Final pipeline result
+      if: success()
+      run: |
+          $NOTIFY "🚀 Pipeline completed successfully!" $SLACK_WEBHOOK
+    - name: Final pipeline failure
+      if: failure()
+      run: |
+          $NOTIFY "🔥 Pipeline failed!" $SLACK_WEBHOOK
+
