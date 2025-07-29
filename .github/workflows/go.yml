@@ -90,7 +90,8 @@ jobs:
       run: |
         $NOTIFY "Starting Step - Archive and upload Go binary" "$SLACK_WEBHOOK"
         mkdir -p dist
-        go build -ldflags "-X 'github.com/ronthesoul/goflow-builder/cmd.Version=${{ github.ref_name }}'" -o dist/goflow-builder main.go
+        go build -ldflags "-X github.com/ronthesoul/goflow-builder/cmd.Version=${{ github.ref_name }}" -o dist/goflow-builder main.go
+
   
     - name: Archive tool
       run: |
