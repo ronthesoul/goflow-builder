@@ -93,7 +93,10 @@ jobs:
         mkdir -p dist
         go build -ldflags "-X github.com/ronthesoul/goflow-builder/cmd.Version=v1.0.${{ github.run_number }}" -o dist/goflow-builder main.go
 
-  
+    - name: Print binary version
+      run: ./dist/goflow-builder version
+
+
     - name: Archive tool
       run: |
         cd dist
