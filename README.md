@@ -15,6 +15,12 @@ This repository contains a Go tool  designed to build and generate custom GitHub
 ## Installation
 
 ### Download Using `go install`
+Install the latest zip manually or via the following github client script (Recommended):
+```bash
+§ gh release download -R ronthesoul/goflow-builder --pattern 'goflow-builder-{Insert here the wanted version}.zip'
+unzip goflow-builder-{Insert here the wanted version}.zip
+```
+
 Install the `goflow-builder` tool directly from the source using Go:
 
 ```bash
