@@ -3,8 +3,17 @@ name: goflowBuilder-Test
 on:
   push:
     branches: [ "main" ]
+    paths-ignore: 
+    - ".github/workflows/*" 
+    - "README.md"
+    - "LICENSE"
+      
   pull_request:
     branches: [ "main" ]
+    paths-ignore: 
+    - ".github/workflows/*" 
+    - "README.md"
+    - "LICENSE"
 
 jobs:
   build:
