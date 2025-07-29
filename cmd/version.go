@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -10,12 +7,16 @@ import (
 )
 
 var Version string
-
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Returns the version of the application",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("goflow-builder version:", Version)
+
+		if Version == "" {
+			fmt.Println("goflow-builder version: unknown")
+		} else {
+			fmt.Println("goflow-builder version:", Version)
+		}
 	},
 }
 
