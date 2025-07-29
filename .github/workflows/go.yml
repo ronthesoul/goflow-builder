@@ -35,19 +35,19 @@ jobs:
         chmod +x $NOTIFY
         $NOTIFY "Starting ${{ github.event.repository.name }} Test - Commit: ${{ github.event.head_commit.message }}" $SLACK_WEBHOOK
 
-    - name: Build
+    - name: Early Build
       run: |
         set +e
-        $NOTIFY "Starting Step - Build" $SLACK_WEBHOOK
+        $NOTIFY "Starting Step - Early Build" $SLACK_WEBHOOK
         go build -v ./... > build.log 2>&1
         STATUS=$?
         OUTPUT=$(cat build.log)
         rm build.log
 
         if [[ $STATUS -eq 0 ]]; then
-          $NOTIFY "Step - Build ✅ Success" $SLACK_WEBHOOK
+          $NOTIFY "Step - Early Build ✅ Success" $SLACK_WEBHOOK
         else
-          $NOTIFY "Step - Build ❌ Failed \n\`\`\`$OUTPUT\`\`\`" $SLACK_WEBHOOK
+          $NOTIFY "Step - Early Build ❌ Failed \n\`\`\`$OUTPUT\`\`\`" $SLACK_WEBHOOK
           exit 1
         fi
 
@@ -88,9 +88,10 @@ jobs:
 
     - name: Build Go binary
       run: |
+        $NOTIFY "Starting Step - Archive and upload Go binary" "$SLACK_WEBHOOK"
         mkdir -p dist
-        GOOS=linux GOARCH=amd64 go build -o dist/goflow-builder main.go
-
+        go build -ldflags "-X 'github.com/ronthesoul/goflow-builder/cmd.Version=${{ github.ref_name }}'" -o dist/goflow-builder main.go
+  
     - name: Archive tool
       run: |
         cd dist
